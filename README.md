@@ -1,100 +1,86 @@
-# VeloDash — Operations & Deployment Guide
+# VeloDash — Operations & Deployment Guide (Bulletproof Version)
 
-Welcome to the VeloDash operations manual. This guide contains everything you need to set up, deploy, and maintain the VeloDash platform.
+Welcome to the VeloDash operations manual. This guide is designed for engineers and ops teams to deploy the platform from scratch with zero prior knowledge.
 
-## 1. Environment Configuration
+## 1. Prerequisites & API Keys
 
-Copy `.env.local.example` to `.env.local` and fill in the following keys:
+Before starting, ensure you have accounts with:
+- **Supabase** (Database & Auth)
+- **Stripe** (Payments & Connect)
+- **Google Cloud Console** (Maps/Places)
+- **Resend** (Email)
+- **Vercel** (Hosting)
 
-### Supabase (Database & Auth)
-- `NEXT_PUBLIC_SUPABASE_URL`: Your Supabase project URL.
-- `NEXT_PUBLIC_SUPABASE_ANON_KEY`: Public anon key for client-side access.
-- `SUPABASE_SERVICE_ROLE_KEY`: Service role key for administrative tasks (e.g., Merchant Acquisition Bot).
+### Environment Variables (`.env.local`)
 
-### Stripe (Payments)
-- `STRIPE_SECRET_KEY`: Secret key for server-side API calls.
-- `STRIPE_WEBHOOK_SECRET`: Secret for verifying Stripe webhooks.
-- `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY`: Publishable key for the frontend.
+Copy `.env.local.example` and fill in the following:
 
-### Integration Partners
-- `GOOGLE_PLACES_API_KEY`: Required for the Shop Discovery Bot.
-- `RESEND_API_KEY`: API key for automated merchant outreach emails.
-- `NEXT_PUBLIC_BASE_URL`: The base URL of the deployed application (e.g., `https://velodash.de`).
+| Variable | Source | Description |
+|----------|--------|-------------|
+| `NEXT_PUBLIC_SUPABASE_URL` | Supabase Project Settings | Project API URL |
+| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Supabase Project Settings | Public API key |
+| `SUPABASE_SERVICE_ROLE_KEY` | Supabase Project Settings | **Private** admin key for the bot |
+| `STRIPE_SECRET_KEY` | Stripe Dashboard (API Keys) | `sk_test_...` or `sk_live_...` |
+| `STRIPE_WEBHOOK_SECRET` | Stripe CLI or Dashboard | For verifying webhook events |
+| `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY` | Stripe Dashboard | `pk_test_...` |
+| `GOOGLE_PLACES_API_KEY` | Google Cloud Console | Enable "Places API (New)" |
+| `RESEND_API_KEY` | Resend Dashboard | API key for outreach emails |
+| `NEXT_PUBLIC_BASE_URL` | Vercel / Custom Domain | e.g. `https://velodash.de` |
 
-## 2. Deployment Order (Step-by-Step)
+## 2. Deployment Order (Critical)
 
-To ensure a smooth launch, follow this exact sequence:
+Follow this exact sequence to avoid integration failures:
 
-1.  **Supabase Infrastructure**:
-    *   Create a Supabase project.
-    *   Apply migrations in `supabase/migrations/` (001 then 002).
-    *   Enable Real-time for `slots` table.
-2.  **Stripe Configuration**:
-    *   Set up a Stripe Connect platform in your Stripe Dashboard.
-    *   Configure the Webhook endpoint to point to `your-domain.com/api/stripe/webhook`.
-3.  **Vercel Deployment**:
-    *   Push code to GitHub.
-    *   Connect to Vercel and add all environment variables from Section 1.
-    *   Deploy.
-4.  **Merchant Discovery**:
-    *   Once deployed, trigger the first batch of shop acquisitions via `/api/shops/automate`.
+### Step 1: Database Initialization
+1. Create a new Supabase project.
+2. Go to the **SQL Editor**.
+3. Execute the content of `supabase/migrations/001_initial_schema.sql`.
+4. Execute the content of `supabase/migrations/002_google_places_outreach.sql`.
+5. **Real-time Setup**: Go to *Database -> Replication -> supabase_realtime*. Ensure the `slots` table is toggled to **Enabled**.
 
-## 3. Database Setup
+### Step 2: Stripe Connect Setup
+1. In your Stripe Dashboard, go to **Connect**.
+2. Complete the platform onboarding.
+3. Set your platform's branding (logo, colors).
+4. Go to **Developers -> Webhooks**.
+5. Add an endpoint: `https://your-domain.com/api/stripe/webhook`.
+6. Select events: `checkout.session.completed`, `account.updated`.
 
-VeloDash uses Supabase. To initialize the database:
+### Step 3: Vercel Hosting
+1. Push the repository to GitHub.
+2. Connect the repo to Vercel.
+3. Add all variables from Section 1 to *Project Settings -> Environment Variables*.
+4. **Build Settings**: Next.js (default).
+5. Deploy.
 
-1. Create a new project in the [Supabase Dashboard](https://supabase.com).
-2. Run the migrations located in `supabase/migrations/` in order:
-    - `001_initial_schema.sql`: Sets up tables, enums, RLS, and seed data.
-    - `002_google_places_outreach.sql`: Adds columns for shop discovery tracking.
-3. Enable **Real-time** for the `slots` table in the Supabase Replication settings.
+### Step 4: GitHub Actions (CI/CD)
+Add these secrets to your GitHub Repo (*Settings -> Secrets and variables -> Actions*):
+- `VERCEL_TOKEN`: Get from Vercel User Settings (Tokens).
+- `VERCEL_ORG_ID`: Found in Vercel Team Settings.
+- `VERCEL_PROJECT_ID`: Found in Vercel Project Settings.
 
-## 3. Merchant Acquisition Bot
+## 3. Post-Deployment Operations
 
-The bot is designed to find and contact high-potential bike shops.
+### Triggering Shop Acquisition
+The platform starts empty. To seed it with shops:
+1. Call the automation endpoint (e.g., via Postman or cURL):
+   ```bash
+   curl -X POST https://your-domain.com/api/shops/automate \
+     -H "Content-Type: application/json" \
+     -d '{"city": "Berlin"}'
+   ```
+2. Monitor the `shops` table in Supabase for status changes to `kontaktiert`.
 
-- **Discovery**: Call `GET /api/shops/discover?city=Berlin` to find shops.
-- **Automated Outreach**: Call `POST /api/shops/automate` with `{"city": "Berlin"}`. This will:
-    1. Find shops in Berlin via Google Places.
-    2. Filter for ratings > 4.0.
-    3. Import them into the `shops` table.
-    4. Send a personalized outreach email via Resend.
-    5. Update status to `kontaktiert`.
+### Handling the Waitlist
+When a German ZIP code (PLZ) reaches 10 signups, the `waitlist` table will flag it.
+- **Action**: Check the `waitlist` table periodically. Filter by `signup_count >= 10`.
+- **Acquisition**: Run the `automate` endpoint for the specific city associated with that PLZ.
 
-## 4. Shop Onboarding & Payouts
+## 4. Troubleshooting
 
-1. Shops land on `/shops/claim`.
-2. They enter their details and are redirected to **Stripe Connect Express** for verification.
-3. Once verified, they can toggle "Emergency Slot Available" on their `/dashboard`.
-4. **Commission**: VeloDash takes a **25% commission** on every booking. This is handled automatically via Stripe Destination Charges.
-
-## 5. Viral Waitlist
-
-If a user enters a PLZ where no shops are active:
-1. They are prompted to join the waitlist.
-2. Signups are stored in the `waitlist` table.
-3. Once a PLZ reaches **10 signups**, a notification is triggered for the ops team to acquire a shop in that area.
-
-## 6. Deployment (Vercel)
-
-VeloDash is optimized for Vercel and Edge Functions.
-
-### CI/CD with GitHub Actions
-The project includes a `.github/workflows/deploy.yml` that handles automatic deployments. Ensure the following secrets are set in your GitHub repository:
-- `VERCEL_TOKEN`
-- `VERCEL_ORG_ID`
-- `VERCEL_PROJECT_ID`
-
-### Production Deployment
-1. Connect your repository to Vercel.
-2. Configure all environment variables in the Vercel Dashboard.
-3. Ensure the `edge` runtime is used for performance-critical routes (already configured in `src/app/api`).
-
-## 7. Performance & SEO
-
-- **Localized Pages**: Static city pages are generated for core markets (Berlin, München, etc.).
-- **Edge Functions**: AI estimation and SEO generation run on the Edge for sub-100ms response times.
-- **German Language**: All customer-facing copy must remain in German to maintain brand consistency in the DACH region.
+- **Checkouts failing?** Verify `STRIPE_WEBHOOK_SECRET` matches exactly and your Vercel URL is correctly set in Stripe.
+- **No shops found?** Ensure "Places API (New)" is enabled in Google Cloud Console, not just the legacy "Places API".
+- **Email not sending?** Ensure your domain is verified in the Resend dashboard.
 
 ---
 *VeloDash — German Engineered Reliability.*

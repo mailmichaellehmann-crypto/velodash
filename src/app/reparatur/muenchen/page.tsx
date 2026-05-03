@@ -2,6 +2,8 @@ import { Metadata } from "next";
 import CityHero from "@/components/CityHero";
 import BookingFlow from "@/components/BookingFlow";
 import WaitlistForm from "@/components/WaitlistForm";
+import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
 import { CheckCircle2, ShieldCheck, Zap, ArrowRight } from "lucide-react";
 
 export const metadata: Metadata = {
@@ -45,6 +47,8 @@ const FAQS = [
 export default function MuenchenPage() {
   return (
     <main className="min-h-screen bg-slate-light">
+      <Navbar />
+      
       <CityHero 
         city="München"
         headline="Fahrrad Reparatur Express München"
@@ -79,7 +83,7 @@ export default function MuenchenPage() {
         </div>
       </section>
 
-      <section className="py-32 bg-carbon-black text-white relative overflow-hidden">
+      <section id="booking" className="py-32 bg-carbon-black text-white relative overflow-hidden">
         {/* Abstract background shape */}
         <div className="absolute top-0 right-0 w-1/2 h-full bg-safety-orange/5 -skew-x-12 translate-x-1/4 pointer-events-none" />
         
@@ -116,23 +120,13 @@ export default function MuenchenPage() {
         </div>
       </section>
 
-      <section className="py-32 bg-slate-light">
+      <section id="waitlist" className="py-32 bg-slate-light">
         <div className="container mx-auto px-6 max-w-4xl">
           <WaitlistForm />
         </div>
       </section>
 
-      <footer className="py-20 bg-carbon-black text-white border-t border-white/5">
-        <div className="container mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-10 text-center md:text-left">
-          <div>
-            <div className="text-3xl font-black tracking-tighter mb-2 italic">VELO<span className="text-safety-orange">DASH</span></div>
-            <p className="text-slate-medium text-sm font-bold uppercase tracking-widest">München Edition</p>
-          </div>
-          <div className="text-slate-medium text-xs font-black uppercase tracking-[0.2em]">
-            © {new Date().getFullYear()} — Premium Bicycle Logistics & Repair Slots
-          </div>
-        </div>
-      </footer>
+      <Footer city="München Edition" />
     </main>
   );
 }

@@ -1,184 +1,87 @@
-# VeloDash — Technical Specification (Final)
+# VeloDash — Technical Specification (Final V1.0)
 
 ## 1. Concept & Vision
 
-**VeloDash** is an autonomous marketplace for premium bike repair express slots in Germany. Users enter their bike type + problem, get an AI-estimated repair time, and book available slots within 5km — no waiting, premium service. Mechanics toggle "Emergency Slot Available" with one click. Shop owners get automatic payouts via Stripe Connect minus our 25% commission.
+**VeloDash** is an autonomous marketplace for premium bike repair express slots in Germany. Users enter their bike type + problem, get an AI-estimated repair time, and book available slots within 5km — no waiting, premium service. 
 
-**Brand Voice**: Fast, professional, German-engineered reliability with modern tech convenience. The UI follows the **"Vicky UI"** design language — bold typography, slate/blue accents, and ultra-smooth Framer Motion transitions.
+**Brand Voice**: Fast, professional, German-engineered reliability. 
+**Design Language (Vicky UI)**: 
+- **Palette**: Carbon Black (`#1A1A1A`), Slate (`#4A5568`), Safety Orange (`#FF5F1F`).
+- **Typography**: Bold, high-contrast headings with mono-spaced utility details.
+- **Motion**: Ultra-smooth transitions via `framer-motion` for all step-based flows.
 
 ## 2. Tech Stack
 
 | Layer | Technology |
 |-------|-----------|
-| Frontend | Next.js 14 (App Router) + Tailwind CSS + Framer Motion |
-| Backend | Supabase (PostgreSQL + Real-time) |
-| Payments | Stripe Connect (Destination charges, 25% commission) |
-| Email | Resend (Merchant Outreach) |
-| Maps | Google Places API (Shop Discovery) |
-| Deployment | Vercel Edge Functions |
+| **Frontend** | Next.js 14 App Router, Tailwind CSS, Framer Motion, Lucide Icons |
+| **Backend** | Supabase (PostgreSQL), Edge Functions (Vercel) |
+| **Payments** | Stripe Connect (Destination charges, 25% commission) |
+| **Automation** | Resend (Merchant Outreach), Google Places API (Discovery) |
 
-## 3. Database Schema (Supabase/PostgreSQL)
+## 3. Implemented Features
 
-### Multi-Tenant Design
+### 3.1. User Experience
+- **Dynamic City Routing**: `/reparatur/[city]` pages for Berlin, München, Hamburg, Köln, and Frankfurt.
+- **AI Repair Estimator**: Real-time estimation of time and cost based on bike type + problem.
+- **Premium Slot Picker**: Visual toggle for "Express" slots (highlighted in Safety Orange).
+- **Stripe Checkout**: Seamless payment integration with automatic shop payouts.
 
-```
-shops
-  ├── id (uuid, pk)
-  ├── name (text)
-  ├── slug (text, unique)
-  ├── address (text)
-  ├── city (text)
-  ├── zip_code (text)
-  ├── lat (numeric)
-  ├── lng (numeric)
-  ├── phone (text)
-  ├── email (text)
-  ├── google_place_id (text, unique) -- Integration ID
-  ├── rating (numeric) -- Google Rating
-  ├── user_ratings_total (int)
-  ├── photo_reference (text)
-  ├── outreach_status (enum: ausstehend | kontaktiert | angemeldet)
-  ├── stripe_account_id (text)
-  ├── is_active (boolean)
-  └── created_at (timestamptz)
+### 3.2. Merchant Acquisition & Operations
+- **Merchant Bot**: Automated script that searches Google Places for high-rated bike shops and triggers email outreach.
+- **Revenue Simulator**: Landing page for shops showing simulated "lost revenue" to drive onboarding.
+- **Shop Dashboard**: Mobile-optimized mechanic view with "Emergency Toggle" for real-time slot management.
+- **Onboarding Flow**: 3-step verification process integrated with Stripe Connect Express.
 
-users
-  ├── id (uuid, pk)
-  ├── email (text, unique)
-  ├── name (text)
-  ├── phone (text)
-  ├── role (enum: kunde | ladenbesitzer | admin)
-  └── created_at (timestamptz)
+### 3.3. Growth Engine
+- **Viral Waitlist Loop**: ZIP-code based capture for areas without active coverage.
+- **10-Person Threshold**: Notification system for the operations team when demand in a PLZ peaks.
 
-bike_types
-  ├── id (uuid, pk)
-  ├── name (text) -- "Rennrad", "Mountainbike", etc.
-  └── base_price_multiplier (numeric)
+## 4. API Endpoints
 
-repair_types
-  ├── id (uuid, pk)
-  ├── name (text)
-  ├── estimated_minutes (int)
-  └── base_price (numeric)
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| `GET` | `/api/repair-types` | Fetch core repair services and base prices |
+| `GET` | `/api/waitlist` | Retrieve signup counts for a specific PLZ |
+| `POST` | `/api/waitlist` | Join the waitlist for a specific area |
+| `GET` | `/api/shops/discover` | Discover shops via Google Places API |
+| `POST` | `/api/shops/automate` | Run full discover-score-outreach loop |
+| `POST` | `/api/stripe/webhook` | Process payment and Connect account updates |
 
-bookings
-  ├── id (uuid, pk)
-  ├── shop_id (uuid, fk)
-  ├── user_id (uuid, fk)
-  ├── bike_type_id (uuid, fk)
-  ├── repair_type_id (uuid, fk)
-  ├── status (enum: ausstehend | bestätigt | in_bearbeitung | abgeschlossen | storniert)
-  ├── scheduled_at (timestamptz)
-  ├── estimated_duration_minutes (int)
-  ├── final_price (numeric)
-  ├── commission_amount (numeric) -- 25%
-  ├── stripe_payment_intent_id (text)
-  └── created_at (timestamptz)
-
-slots
-  ├── id (uuid, pk)
-  ├── shop_id (uuid, fk)
-  ├── starts_at (timestamptz)
-  ├── ends_at (timestamptz)
-  ├── is_available (boolean)
-  ├── is_express (boolean)
-  └── created_at (timestamptz)
-
-waitlist
-  ├── id (uuid, pk)
-  ├── zip_code (text)
-  ├── city (text)
-  ├── email (text)
-  ├── signup_count (int)
-  └── created_at (timestamptz)
-
-city_pages
-  ├── id (uuid, pk)
-  ├── city (text, unique)
-  ├── seo_title (text)
-  ├── seo_description (text)
-  ├── hero_headline (text)
-  ├── hero_subtext (text)
-  ├── benefits (text[])
-  ├── faq (jsonb)
-  └── generated_at (timestamptz)
-```
-
-## 4. Core User Flows (Implemented)
-
-### Flow 1: Premium Booking Experience
-- **Dynamic City Landing Pages**: Optimized for SEO in 50+ German cities.
-- **AI Estimation**: Instant repair time and price calculation via Vercel Edge Functions.
-- **Real-time Slot Picking**: Visual selector for express vs. standard slots.
-- **Stripe Checkout**: Automated 25% split between platform and merchant.
-
-### Flow 2: Mechanic Operations (Dashboard)
-- **One-Click Emergency Toggle**: Mechanics can immediately open slots to high-intent users.
-- **Stripe Connect Onboarding**: Fast-track setup for new merchants.
-- **Earnings Tracking**: Real-time visibility into revenue and payouts.
-
-### Flow 3: The "Growth Loop"
-- **Viral Waitlist**: Captures user intent in new areas.
-- **10-Person Threshold**: Triggers a notification once a PLZ hits 10 signups.
-- **Merchant Bot**: Automated discovery and outreach to shops in high-demand PLZs.
-
-## 5. API Endpoints
-
-### Public / SEO
-- `GET /api/repair-types` — Core repair data.
-- `GET /api/waitlist?zip_code=...` — Get current waitlist count.
-- `POST /api/waitlist` — Join the waitlist.
-
-### Merchant Acquisition (Bot)
-- `GET /api/shops/discover` — Find shops via Google Places.
-- `POST /api/shops/import` — Import shop to DB.
-- `POST /api/shops/automate` — Complete discover-import-outreach loop.
-
-### Booking & Payments
-- `POST /api/bookings/[id]/checkout` — Create Stripe session.
-- `POST /api/stripe/webhook` — Process payment success.
-
-## 6. Project Architecture (File Structure)
+## 5. File Structure (Source of Truth)
 
 ```
 velodash/
 ├── src/
 │   ├── app/
-│   │   ├── api/
-│   │   │   ├── ai-estimate/      # Edge
-│   │   │   ├── waitlist/         # Viral loop
-│   │   │   ├── shops/automate/   # Merchant Bot
-│   │   │   └── stripe/webhook/   # Payments
-│   │   ├── reparatur/[city]/     # SEO Pages
-│   │   ├── dashboard/            # Merchant UI
-│   │   └── shops/claim/          # Onboarding
+│   │   ├── api/                  # All backend logic
+│   │   ├── dashboard/            # Merchant interface
+│   │   ├── reparatur/[city]/     # SEO City Landing Pages
+│   │   └── shops/claim/          # Shop onboarding
 │   ├── components/
-│   │   ├── BookingFlow.tsx
-│   │   ├── SlotPicker.tsx
-│   │   └── WaitlistForm.tsx      # PLZ tracking
+│   │   ├── BookingFlow.tsx       # AI Estimator + Multi-step form
+│   │   ├── SlotPicker.tsx        # Real-time availability UI
+│   │   ├── CityHero.tsx          # Asymmetrical premium hero
+│   │   └── WaitlistForm.tsx      # Viral demand tracker
 │   └── lib/
-│       ├── supabase.ts
-│       ├── stripe.ts             # Connect integration
-│       ├── google-places.ts      # Discovery
-│       └── outreach.ts           # Resend integration
+│       ├── stripe.ts             # Destination charge logic
+│       ├── google-places.ts      # Mapping integration
+│       └── outreach.ts           # Resend email templates
 ├── supabase/
-│   └── migrations/
-│       ├── 001_initial_schema.sql
-│       └── 002_google_places_outreach.sql
-└── vercel.json
+│   └── migrations/               # Database schema (001, 002)
+└── vercel.json                   # Edge Function config
 ```
 
-## 7. Acceptance Criteria (Completion Status)
+## 6. Acceptance Criteria (Final Status)
 
-- [x] Database schema created in Supabase (Initial + Outreach migrations)
-- [x] 5 localized SEO pages working (Berlin, München, Hamburg, Köln, Frankfurt)
-- [x] Booking flow functional with AI estimation and Slot Picker
-- [x] Shop dashboard with one-click emergency slot toggle
-- [x] Stripe Connect integration with 25% destination charge logic
-- [x] Viral waitlist implemented with PLZ count badge
-- [x] Merchant Acquisition Bot with Google Places + Resend outreach
-- [x] Vercel Edge Functions for ultra-fast load times
-- [x] CI/CD pipeline configured for automated deployment
+V1.0 is officially "Production Ready" with all core requirements fulfilled:
+
+- [x] **Task 1-5**: Base infrastructure, project initialization, and shared UI setup.
+- [x] **Task 6-10**: City landing pages (Berlin, München, etc.) and dynamic routing.
+- [x] **Task 11-13**: Booking flow logic, AI estimation, and Slot Picker implementation.
+- [x] **Task 14-15**: Shop Dashboard, emergency toggle, and Stripe Connect integration.
+- [x] **Task 16-17**: Merchant Acquisition Bot, Google Places, and Resend outreach.
+- [x] **Task 18-21**: Waitlist loop, PLZ demand tracking, and full documentation.
 
 ---
-*VeloDash Status: Version 1.0 Production Ready.*
+*VeloDash — Version 1.0. Build Complete.*

@@ -2,6 +2,8 @@ import { Metadata } from "next";
 import CityHero from "@/components/CityHero";
 import BookingFlow from "@/components/BookingFlow";
 import WaitlistForm from "@/components/WaitlistForm";
+import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
 import { CheckCircle2, ShieldCheck, Zap, ArrowRight } from "lucide-react";
 
 export const metadata: Metadata = {
@@ -45,6 +47,8 @@ const FAQS = [
 export default function BerlinPage() {
   return (
     <main className="min-h-screen bg-slate-light">
+      <Navbar />
+      
       <CityHero 
         city="Berlin"
         headline="Fahrrad Reparatur Express Berlin"
@@ -79,14 +83,14 @@ export default function BerlinPage() {
         </div>
       </section>
 
-      <section className="py-32 bg-carbon-black text-white relative overflow-hidden">
+      <section id="booking" className="py-32 bg-carbon-black text-white relative overflow-hidden">
         {/* Abstract background shape */}
         <div className="absolute top-0 right-0 w-1/2 h-full bg-safety-orange/5 -skew-x-12 translate-x-1/4 pointer-events-none" />
         
         <div className="container mx-auto px-6 relative z-10">
           <div className="text-center mb-20">
             <span className="text-safety-orange font-black uppercase tracking-[0.4em] text-xs mb-4 block">Booking Engine</span>
-            <h2 className="text-5xl md:text-7xl font-black tracking-tighter mb-4 italic">EXPRESS CHECK-IN</h2>
+            <h2 className="text-5xl md:text-7xl font-black tracking-tighter mb-4 italic uppercase">EXPRESS CHECK-IN</h2>
             <div className="w-24 h-2 bg-safety-orange mx-auto" />
           </div>
           <BookingFlow />
@@ -96,7 +100,7 @@ export default function BerlinPage() {
       <section className="py-32 container mx-auto px-6 grid grid-cols-1 lg:grid-cols-12 gap-20 items-start">
         <div className="lg:col-span-5">
           <span className="text-safety-orange font-black uppercase tracking-[0.3em] text-sm mb-4 block">Help Center</span>
-          <h2 className="text-5xl font-black text-carbon-black tracking-tighter mb-8 italic leading-none">NOCH FRAGEN? <br/>WIR HABEN <br/>ANTWORTEN.</h2>
+          <h2 className="text-5xl font-black text-carbon-black tracking-tighter mb-8 italic leading-none uppercase">NOCH FRAGEN? <br/>WIR HABEN <br/>ANTWORTEN.</h2>
           <div className="bg-safety-orange h-px w-full mb-12 opacity-30" />
           <p className="text-slate-medium font-medium text-xl">
             Alles was du über den schnellsten Bike-Service Berlins wissen musst.
@@ -106,7 +110,7 @@ export default function BerlinPage() {
         <div className="lg:col-span-7 space-y-6">
           {FAQS.map((faq) => (
             <div key={faq.question} className="bg-white p-8 rounded-premium premium-shadow border border-slate-light group hover:border-slate-medium transition-all">
-              <h3 className="text-xl font-black text-carbon-black tracking-tighter mb-4 flex items-center gap-4 group-hover:text-safety-orange transition-colors">
+              <h3 className="text-xl font-black text-carbon-black tracking-tighter mb-4 flex items-center gap-4 group-hover:text-safety-orange transition-colors uppercase">
                 <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-1" />
                 {faq.question}
               </h3>
@@ -116,23 +120,13 @@ export default function BerlinPage() {
         </div>
       </section>
 
-      <section className="py-32 bg-slate-light">
+      <section id="waitlist" className="py-32 bg-slate-light">
         <div className="container mx-auto px-6 max-w-4xl">
           <WaitlistForm />
         </div>
       </section>
 
-      <footer className="py-20 bg-carbon-black text-white border-t border-white/5">
-        <div className="container mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-10 text-center md:text-left">
-          <div>
-            <div className="text-3xl font-black tracking-tighter mb-2 italic">VELO<span className="text-safety-orange">DASH</span></div>
-            <p className="text-slate-medium text-sm font-bold uppercase tracking-widest">Berlin City Edition</p>
-          </div>
-          <div className="text-slate-medium text-xs font-black uppercase tracking-[0.2em]">
-            © {new Date().getFullYear()} — Premium Bicycle Logistics & Repair Slots
-          </div>
-        </div>
-      </footer>
+      <Footer city="Berlin City Edition" />
     </main>
   );
 }
