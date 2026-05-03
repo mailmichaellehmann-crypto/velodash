@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Mail, MapPin, Users, Send } from "lucide-react";
+import { Mail, MapPin, Users, Send, ChevronRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 export default function WaitlistForm() {
