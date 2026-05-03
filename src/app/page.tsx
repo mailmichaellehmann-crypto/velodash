@@ -1,6 +1,8 @@
 import Image from "next/image";
 import { Zap, Bike, Store, ArrowRight, ShieldCheck, Clock } from "lucide-react";
 import WaitlistForm from "@/components/WaitlistForm";
+import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
 
 export default function Home() {
   const cities = [
@@ -13,8 +15,10 @@ export default function Home() {
 
   return (
     <main className="min-h-screen bg-slate-light text-carbon-black font-sans">
+      <Navbar />
+
       {/* Hero Section */}
-      <section className="relative min-h-screen flex items-center overflow-hidden bg-carbon-black text-white">
+      <section className="relative min-h-[90vh] flex items-center overflow-hidden bg-carbon-black text-white">
         <div className="absolute top-0 right-0 w-1/2 h-full bg-safety-orange/10 -skew-x-12 translate-x-1/4 z-0" />
         
         <div className="container mx-auto px-6 relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-16 items-center">
@@ -155,46 +159,7 @@ export default function Home() {
         </div>
       </section>
 
-      <footer className="py-32 bg-carbon-black text-white border-t border-white/5 overflow-hidden">
-        <div className="container mx-auto px-6">
-          <div className="grid grid-cols-1 lg:grid-cols-4 gap-20 mb-20">
-            <div className="lg:col-span-2">
-               <div className="text-5xl font-black tracking-tighter mb-6 italic uppercase">VELO<span className="text-safety-orange">DASH</span></div>
-               <p className="text-slate-medium font-medium text-xl max-w-sm leading-relaxed">
-                 Die erste autonome Plattform für Premium Fahrrad-Logistik und Express-Reparaturen.
-               </p>
-            </div>
-            
-            <div>
-              <h4 className="font-black uppercase tracking-widest text-xs mb-8 text-safety-orange">Product</h4>
-              <ul className="space-y-4 font-black uppercase tracking-widest text-[10px]">
-                <li><a href="#cities" className="hover:text-safety-orange">Cities</a></li>
-                <li><a href="/shops/claim" className="hover:text-safety-orange">For Shops</a></li>
-                <li><a href="#" className="hover:text-safety-orange">Support</a></li>
-              </ul>
-            </div>
-            
-            <div>
-              <h4 className="font-black uppercase tracking-widest text-xs mb-8 text-safety-orange">Company</h4>
-              <ul className="space-y-4 font-black uppercase tracking-widest text-[10px]">
-                <li><a href="#" className="hover:text-safety-orange">About</a></li>
-                <li><a href="#" className="hover:text-safety-orange">Privacy</a></li>
-                <li><a href="#" className="hover:text-safety-orange">Terms</a></li>
-              </ul>
-            </div>
-          </div>
-          
-          <div className="pt-20 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-10">
-            <div className="text-slate-medium text-xs font-black uppercase tracking-[0.2em]">
-              © {new Date().getFullYear()} — GERMAN ENGINEERED BICYCLE LOGISTICS
-            </div>
-            <div className="flex gap-6 grayscale opacity-50">
-               <span className="font-black uppercase tracking-widest text-[10px]">INSTAGRAM</span>
-               <span className="font-black uppercase tracking-widest text-[10px]">TWITTER</span>
-            </div>
-          </div>
-        </div>
-      </section>
+      <Footer />
     </main>
   );
 }

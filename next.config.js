@@ -1,9 +1,11 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
-  swcMinify: true,
   images: {
-    domains: ['images.unsplash.com', 'maps.googleapis.com'],
+    remotePatterns: [
+      { hostname: 'images.unsplash.com' },
+      { hostname: 'maps.googleapis.com' },
+    ],
   },
 };
 
