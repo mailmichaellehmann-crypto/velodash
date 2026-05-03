@@ -1,0 +1,27 @@
+{
+  "city": "München",
+  "seo_title": "Fahrrad Reparatur Express München | VeloDash - Dein Termin in 2h",
+  "seo_description": "Professionelle Fahrradreparatur in München. Schnelle Express-Termine, mobile Mechaniker und transparente Preise. Buche jetzt deinen Slot in der Münchner Innenstadt!",
+  "hero_headline": "Express Fahrrad Reparatur in München",
+  "hero_subtext": "Keine Lust auf wochenlange Wartezeiten? Bei VeloDash findest du sofort verfügbare Reparatur-Slots bei den besten Münchner Werkstätten.",
+  "benefits": [
+    "Express-Service: Reparatur oft noch am gleichen Tag",
+    "Transparente Preise: Keine versteckten Kosten",
+    "Top-Werkstätten: Zertifizierte Mechaniker in ganz München",
+    "Einfache Buchung: In weniger als 2 Minuten zum Termin"
+  ],
+  "faq": [
+    {
+      "question": "Wie schnell bekomme ich einen Termin in München?",
+      "answer": "Dank unserer Echtzeit-Anbindung an Münchner Werkstätten siehst du sofort verfügbare Express-Slots. Oft ist eine Reparatur innerhalb von 2-4 Stunden möglich."
+    },
+    {
+      "question": "Was kostet eine Fahrradreparatur bei VeloDash?",
+      "answer": "Die Preise variieren je nach Reparaturtyp. Eine Standardschaltungseinstellung beginnt bereits bei 15€. Du erhältst vor der Buchung eine genaue Preisschätzung."
+    },
+    {
+      "question": "Wo finde ich die Werkstätten in München?",
+      "answer": "Wir arbeiten mit einem Netzwerk von Partnerwerkstätten in ganz München zusammen – von Mitte bis Charlottenburg, von Schwabing bis Sendling."
+    }
+  ]
+}

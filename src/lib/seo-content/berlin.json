@@ -1,0 +1,27 @@
+{
+  "city": "Berlin",
+  "seo_title": "Fahrrad Reparatur Express Berlin | VeloDash - Dein Termin in 2h",
+  "seo_description": "Professionelle Fahrradreparatur in Berlin. Schnelle Express-Termine, mobile Mechaniker und transparente Preise. Buche jetzt deinen Slot in der Berliner Innenstadt!",
+  "hero_headline": "Express Fahrrad Reparatur in Berlin",
+  "hero_subtext": "Keine Lust auf wochenlange Wartezeiten? Bei VeloDash findest du sofort verfügbare Reparatur-Slots bei den besten Berliner Werkstätten.",
+  "benefits": [
+    "Express-Service: Reparatur oft noch am gleichen Tag",
+    "Transparente Preise: Keine versteckten Kosten",
+    "Top-Werkstätten: Zertifizierte Mechaniker in ganz Berlin",
+    "Einfache Buchung: In weniger als 2 Minuten zum Termin"
+  ],
+  "faq": [
+    {
+      "question": "Wie schnell bekomme ich einen Termin in Berlin?",
+      "answer": "Dank unserer Echtzeit-Anbindung an Berliner Werkstätten siehst du sofort verfügbare Express-Slots. Oft ist eine Reparatur innerhalb von 2-4 Stunden möglich."
+    },
+    {
+      "question": "Was kostet eine Fahrradreparatur bei VeloDash?",
+      "answer": "Die Preise variieren je nach Reparaturtyp. Eine Standardschaltungseinstellung beginnt bereits bei 15€. Du erhältst vor der Buchung eine genaue Preisschätzung."
+    },
+    {
+      "question": "Wo finde ich die Werkstätten in Berlin?",
+      "answer": "Wir arbeiten mit einem Netzwerk von Partnerwerkstätten in ganz Berlin zusammen – von Mitte bis Charlottenburg, von Schwabing bis Sendling."
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "city": "Hamburg",
+  "seo_title": "Fahrrad Reparatur Express Hamburg | VeloDash - Dein Termin in 2h",
+  "seo_description": "Professionelle Fahrradreparatur in Hamburg. Schnelle Express-Termine, mobile Mechaniker und transparente Preise. Buche jetzt deinen Slot in der Hamburger Innenstadt!",
+  "hero_headline": "Express Fahrrad Reparatur in Hamburg",
+  "hero_subtext": "Keine Lust auf wochenlange Wartezeiten? Bei VeloDash findest du sofort verfügbare Reparatur-Slots bei den besten Hamburger Werkstätten.",
+  "benefits": [
+    "Express-Service: Reparatur oft noch am gleichen Tag",
+    "Transparente Preise: Keine versteckten Kosten",
+    "Top-Werkstätten: Zertifizierte Mechaniker in ganz Hamburg",
+    "Einfache Buchung: In weniger als 2 Minuten zum Termin"
+  ],
+  "faq": [
+    {
+      "question": "Wie schnell bekomme ich einen Termin in Hamburg?",
+      "answer": "Dank unserer Echtzeit-Anbindung an Hamburger Werkstätten siehst du sofort verfügbare Express-Slots. Oft ist eine Reparatur innerhalb von 2-4 Stunden möglich."
+    },
+    {
+      "question": "Was kostet eine Fahrradreparatur bei VeloDash?",
+      "answer": "Die Preise variieren je nach Reparaturtyp. Eine Standardschaltungseinstellung beginnt bereits bei 15€. Du erhältst vor der Buchung eine genaue Preisschätzung."
+    },
+    {
+      "question": "Wo finde ich die Werkstätten in Hamburg?",
+      "answer": "Wir arbeiten mit einem Netzwerk von Partnerwerkstätten in ganz Hamburg zusammen – von Mitte bis Charlottenburg, von Schwabing bis Sendling."
+    }
+  ]
+}
