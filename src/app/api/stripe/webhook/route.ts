@@ -23,7 +23,7 @@ export async function POST(request: Request) {
   switch (event.type) {
     case 'checkout.session.completed':
       const session = event.data.object as Stripe.Checkout.Session;
-      const bookingId = session.payment_intent_data?.metadata?.bookingId || session.metadata?.bookingId;
+      const bookingId = (session.payment_intent as string) || session.metadata?.bookingId;
 
       if (bookingId) {
         // Update booking status to confirmed
