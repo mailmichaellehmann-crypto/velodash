@@ -2,10 +2,7 @@ import Stripe from 'stripe';
 
 const stripeSecretKey = process.env.STRIPE_SECRET_KEY || 'sk_placeholder';
 
-export const stripe = new Stripe(stripeSecretKey, {
-  apiVersion: '2025-01-27.acacia',
-  typescript: true,
-});
+export const stripe = new Stripe(stripeSecretKey);
 
 /**
  * Creates a Stripe Checkout Session with Destination Charges.
