@@ -4,9 +4,9 @@ import { createCheckoutSession } from '@/lib/stripe';
 
 export async function POST(
   request: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
-  const bookingId = params.id;
+  const { id: bookingId } = await params;
   const { return_url, cancel_url } = await request.json();
 
   const { data: booking, error: bookingError } = await supabase
