@@ -19,9 +19,9 @@ export default function ShopDashboard() {
 
   // Mock data
   const bookings = [
-    { id: "1", customer: "Max Mustermann", bike: "Rennrad", service: "Kette wechseln", time: "14:30 Uhr", status: "confirmed" },
-    { id: "2", customer: "Sarah Schmidt", bike: "E-Bike", service: "Inspektion", time: "16:00 Uhr", status: "pending" },
-    { id: "3", customer: "Lukas Weber", bike: "MTB", service: "Bremsen", time: "Morgen, 10:00 Uhr", status: "confirmed" },
+    { id: "1", customer: "Max Mustermann", bike: "Rennrad", service: "Kette wechseln", time: "14:30 Uhr", status: "bestätigt" },
+    { id: "2", customer: "Sarah Schmidt", bike: "E-Bike", service: "Inspektion", time: "16:00 Uhr", status: "ausstehend" },
+    { id: "3", customer: "Lukas Weber", bike: "MTB", service: "Bremsen", time: "Morgen, 10:00 Uhr", status: "bestätigt" },
   ];
 
   const stats = [
@@ -138,7 +138,7 @@ export default function ShopDashboard() {
                       <td className="px-6 py-4">
                         <span className={cn(
                           "px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider",
-                          booking.status === "confirmed" ? "bg-green-100 text-green-700" : "bg-blue-100 text-blue-700"
+                          booking.status === "bestätigt" ? "bg-green-100 text-green-700" : "bg-blue-100 text-blue-700"
                         )}>
                           {booking.status}
                         </span>

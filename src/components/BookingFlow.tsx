@@ -6,7 +6,7 @@ import { Bike, ChevronRight, ChevronLeft, Clock, MapPin, CheckCircle2 } from "lu
 import SlotPicker from "./SlotPicker";
 import { cn } from "@/lib/utils";
 
-const STEPS = ["Bike Type", "Problem", "Estimate", "Slot", "Confirm"];
+const STEPS = ["Fahrrad-Typ", "Problem", "Schätzung", "Termin", "Bestätigung"];
 
 const BIKE_TYPES = [
   { id: "rennrad", name: "Rennrad", icon: Bike },
@@ -194,7 +194,7 @@ export default function BookingFlow() {
                 </div>
               </div>
               <button 
-                onClick={() => alert("Redirecting to Stripe...")}
+                onClick={() => alert("Weiterleitung zu Stripe...")}
                 className="w-full bg-blue-600 text-white py-4 rounded-xl font-bold text-lg hover:bg-blue-700 transition-colors"
               >
                 Jetzt verbindlich buchen
