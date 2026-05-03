@@ -19,12 +19,12 @@ export async function POST(
     .single();
 
   if (bookingError || !booking) {
-    return NextResponse.json({ error: 'Booking not found' }, { status: 404 });
+    return NextResponse.json({ error: 'Buchung nicht gefunden' }, { status: 404 });
   }
 
   const shop = booking.shops as any;
   if (!shop?.stripe_account_id) {
-    return NextResponse.json({ error: 'Shop has no Stripe account' }, { status: 400 });
+    return NextResponse.json({ error: 'Shop hat kein Stripe-Konto' }, { status: 400 });
   }
 
   try {
@@ -39,6 +39,6 @@ export async function POST(
 
     return NextResponse.json({ url: session.url });
   } catch (error: any) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    return NextResponse.json({ error: 'Fehler beim Erstellen der Checkout-Sitzung' }, { status: 500 });
   }
 }

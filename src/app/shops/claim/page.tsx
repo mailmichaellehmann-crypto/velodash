@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { 
   Store, 
   MapPin, 
@@ -11,7 +11,8 @@ import {
   CheckCircle2, 
   ChevronRight,
   Calculator,
-  Zap
+  Zap,
+  ArrowLeft
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -27,217 +28,252 @@ export default function ShopClaimPage() {
   const [simulatedRevenue, setSimulatedRevenue] = useState(2450);
 
   const nextStep = () => setStep(s => s + 1);
+  const prevStep = () => setStep(s => Math.max(0, s - 1));
 
   return (
-    <main className="min-h-screen bg-slate-50">
-      {/* Header */}
-      <header className="bg-white border-b border-slate-200 py-4 px-6 sticky top-0 z-30">
+    <main className="min-h-screen bg-slate-light text-carbon-black font-sans">
+      {/* Premium Header */}
+      <header className="bg-carbon-black text-white py-6 px-8 sticky top-0 z-50 border-b border-white/5">
         <div className="max-w-7xl mx-auto flex justify-between items-center">
-          <div className="flex items-center gap-2">
-            <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center text-white font-bold text-xl">V</div>
-            <span className="font-bold text-xl tracking-tight text-slate-900">VeloDash <span className="text-blue-600 font-medium">Partner</span></span>
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 bg-safety-orange rounded-xl flex items-center justify-center text-white font-black italic">V</div>
+            <span className="font-black text-2xl tracking-tighter uppercase italic">VELO<span className="text-safety-orange">DASH</span> <span className="text-white/40 not-italic ml-2 text-sm uppercase tracking-[0.2em]">Partner</span></span>
           </div>
-          <a href="/" className="text-sm font-medium text-slate-500 hover:text-slate-900 transition-colors">Zurück zur Hauptseite</a>
+          <a href="/" className="text-xs font-black uppercase tracking-widest text-slate-medium hover:text-safety-orange transition-colors flex items-center gap-2">
+            <ArrowLeft className="w-4 h-4" /> Zurück
+          </a>
         </div>
       </header>
 
-      <div className="max-w-4xl mx-auto py-12 px-4">
-        {step === 0 && (
-          <motion.div 
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="text-center space-y-8"
-          >
-            <div className="inline-flex items-center gap-2 bg-blue-100 text-blue-700 px-4 py-2 rounded-full text-sm font-bold uppercase tracking-wider">
-              <Zap className="w-4 h-4 fill-blue-700" /> Werkstatt-Partner werden
-            </div>
-            <h1 className="text-4xl md:text-5xl font-black text-slate-900 tracking-tight leading-tight">
-              Holen Sie sich mehr Kunden <br />in Ihre Werkstatt.
-            </h1>
-            <p className="text-xl text-slate-600 max-w-2xl mx-auto leading-relaxed">
-              VeloDash verbindet Premium-Fahrradläden mit Kunden, die sofortige Express-Reparaturen suchen. Steigern Sie Ihren Umsatz ohne Mehraufwand.
-            </p>
-
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 py-8">
-              {[
-                { title: "Mehr Umsatz", text: "Zusätzliche Buchungen durch Express-Slots.", icon: TrendingUp },
-                { title: "Einfache Verwaltung", text: "Dashboard für alle Termine und Zahlungen.", icon: CheckCircle2 },
-                { title: "Sichere Auszahlung", text: "Automatisierte Payouts via Stripe Connect.", icon: Zap },
-              ].map((item, i) => (
-                <div key={i} className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm text-left">
-                  <div className="w-10 h-10 bg-slate-50 rounded-xl flex items-center justify-center mb-4 text-blue-600">
-                    <item.icon className="w-6 h-6" />
-                  </div>
-                  <h3 className="font-bold text-slate-900 mb-1">{item.title}</h3>
-                  <p className="text-slate-500 text-sm leading-relaxed">{item.text}</p>
-                </div>
-              ))}
-            </div>
-
-            <button 
-              onClick={nextStep}
-              className="bg-blue-600 hover:bg-blue-700 text-white px-10 py-5 rounded-2xl text-xl font-bold transition-all shadow-xl shadow-blue-500/20 flex items-center gap-3 mx-auto group"
-            >
-              Jetzt Werkstatt listen <ChevronRight className="w-6 h-6 group-hover:translate-x-1 transition-transform" />
-            </button>
-          </motion.div>
-        )}
-
-        {step === 1 && (
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+      <div className="max-w-6xl mx-auto py-20 px-6">
+        <AnimatePresence mode="wait">
+          {step === 0 && (
             <motion.div 
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              className="bg-white p-8 rounded-3xl border border-slate-200 shadow-xl"
+              key="step0"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              className="space-y-16"
             >
-              <h2 className="text-2xl font-bold text-slate-900 mb-6">Werkstatt-Daten angeben</h2>
-              <form className="space-y-4">
-                <div className="space-y-2">
-                  <label className="text-sm font-bold text-slate-700 ml-1">Name der Werkstatt</label>
-                  <div className="relative">
-                    <Store className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 w-5 h-5" />
-                    <input 
-                      type="text" 
-                      placeholder="z.B. RadProfi München" 
-                      className="w-full pl-10 pr-4 py-3 rounded-xl border border-slate-200 focus:ring-2 focus:ring-blue-500 outline-none transition-all"
-                      value={formData.shopName}
-                      onChange={(e) => setFormData({...formData, shopName: e.target.value})}
-                    />
-                  </div>
-                </div>
-                <div className="space-y-2">
-                  <label className="text-sm font-bold text-slate-700 ml-1">Adresse</label>
-                  <div className="relative">
-                    <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 w-5 h-5" />
-                    <input 
-                      type="text" 
-                      placeholder="Straße, PLZ, Stadt" 
-                      className="w-full pl-10 pr-4 py-3 rounded-xl border border-slate-200 focus:ring-2 focus:ring-blue-500 outline-none transition-all"
-                      value={formData.address}
-                      onChange={(e) => setFormData({...formData, address: e.target.value})}
-                    />
-                  </div>
-                </div>
-                <div className="space-y-2">
-                  <label className="text-sm font-bold text-slate-700 ml-1">Telefonnummer</label>
-                  <div className="relative">
-                    <Phone className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 w-5 h-5" />
-                    <input 
-                      type="tel" 
-                      placeholder="+49 ..." 
-                      className="w-full pl-10 pr-4 py-3 rounded-xl border border-slate-200 focus:ring-2 focus:ring-blue-500 outline-none transition-all"
-                      value={formData.phone}
-                      onChange={(e) => setFormData({...formData, phone: e.target.value})}
-                    />
-                  </div>
-                </div>
-                <div className="space-y-2">
-                  <label className="text-sm font-bold text-slate-700 ml-1">E-Mail Adresse</label>
-                  <div className="relative">
-                    <Mail className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 w-5 h-5" />
-                    <input 
-                      type="email" 
-                      placeholder="werkstatt@beispiel.de" 
-                      className="w-full pl-10 pr-4 py-3 rounded-xl border border-slate-200 focus:ring-2 focus:ring-blue-500 outline-none transition-all"
-                      value={formData.email}
-                      onChange={(e) => setFormData({...formData, email: e.target.value})}
-                    />
-                  </div>
-                </div>
-                
-                <button 
-                  type="button"
-                  onClick={nextStep}
-                  disabled={!formData.shopName || !formData.email}
-                  className="w-full bg-slate-900 text-white py-4 rounded-xl font-bold text-lg hover:bg-black transition-colors disabled:opacity-50 mt-4"
-                >
-                  Daten verifizieren
-                </button>
-              </form>
-            </motion.div>
-
-            <motion.div 
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.2 }}
-              className="space-y-6"
-            >
-              <div className="bg-orange-50 border-2 border-orange-200 p-8 rounded-3xl">
-                <div className="flex items-center gap-3 mb-4">
-                  <div className="p-2 bg-orange-100 rounded-lg">
-                    <Calculator className="w-6 h-6 text-orange-600" />
-                  </div>
-                  <h3 className="text-xl font-bold text-orange-900">Umsatz-Potential</h3>
-                </div>
-                <p className="text-orange-800 mb-6 font-medium leading-relaxed">
-                  In Ihrer Region wurden diesen Monat bereits über **120 Express-Reparaturen** angefragt. 
+              <div className="max-w-3xl">
+                <span className="inline-block px-4 py-2 bg-safety-orange/10 text-safety-orange text-xs font-black tracking-[0.3em] uppercase mb-8 rounded">
+                  Merchant Acquisition
+                </span>
+                <h1 className="text-6xl md:text-8xl font-black tracking-tighter leading-[0.9] mb-10 italic uppercase">
+                  DEINE WERKSTATT, <br />UNSER <span className="text-safety-orange">SPEED.</span>
+                </h1>
+                <p className="text-2xl text-slate-medium font-medium leading-relaxed max-w-2xl">
+                  VeloDash verbindet Premium-Fahrradläden mit Kunden, die sofortige Express-Reparaturen suchen. Optimiere deine Auslastung und steigere den Umsatz pro Quadratmeter.
                 </p>
-                <div className="text-center bg-white p-6 rounded-2xl border border-orange-200 shadow-sm">
-                  <p className="text-slate-500 text-sm font-bold uppercase mb-1">Ihr entgangener Umsatz</p>
-                  <p className="text-4xl font-black text-slate-900 tracking-tight">~ {simulatedRevenue},00 €</p>
-                  <p className="text-xs text-orange-600 font-bold mt-2 flex items-center justify-center gap-1">
-                    <Zap className="w-3 h-3 fill-orange-600" /> Potential basierend auf lokalen Daten
-                  </p>
-                </div>
               </div>
 
-              <div className="bg-white p-6 rounded-2xl border border-slate-200">
-                <h4 className="font-bold text-slate-900 mb-4 flex items-center gap-2">
-                  <CheckCircle2 className="w-5 h-5 text-green-500" /> Live Vorschau
-                </h4>
-                <div className="border border-slate-100 rounded-xl p-4 flex gap-4 items-center">
-                  <div className="w-12 h-12 bg-slate-100 rounded-lg flex items-center justify-center">
-                    <Store className="w-6 h-6 text-slate-400" />
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                {[
+                  { title: "MAX Umsatz", text: "Zusätzliche Buchungen durch exklusive Express-Slots.", icon: TrendingUp },
+                  { title: "ZERO Aufwand", text: "Vollautomatisches Dashboard & Buchungsmanagement.", icon: CheckCircle2 },
+                  { title: "SMART Payout", text: "Automatisierte Payouts via Stripe Connect Integration.", icon: Zap },
+                ].map((item, i) => (
+                  <div key={i} className="bg-white p-10 rounded-[2rem] premium-shadow border border-slate-light group hover:border-safety-orange transition-all duration-500">
+                    <div className="w-16 h-16 bg-carbon-black text-safety-orange rounded-2xl flex items-center justify-center mb-8 transition-transform group-hover:rotate-6">
+                      <item.icon className="w-8 h-8 fill-current" />
+                    </div>
+                    <h3 className="font-black text-carbon-black tracking-tighter mb-4 uppercase italic text-2xl">{item.title}</h3>
+                    <p className="text-slate-medium font-medium leading-relaxed">{item.text}</p>
                   </div>
-                  <div>
-                    <p className="font-bold text-slate-900">{formData.shopName || "Ihre Werkstatt"}</p>
-                    <p className="text-xs text-slate-500">{formData.address || "Adresse noch nicht angegeben"}</p>
-                    <div className="flex gap-1 mt-1">
-                      {[1,2,3,4,5].map(s => <div key={s} className="w-3 h-3 bg-yellow-400 rounded-full" />)}
+                ))}
+              </div>
+
+              <div className="flex justify-center pt-10">
+                <motion.button 
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  onClick={nextStep}
+                  className="bg-safety-orange hover:bg-safety-orange-muted text-white px-16 py-8 rounded-premium text-2xl font-black uppercase tracking-tighter transition-all shadow-2xl shadow-safety-orange/40 flex items-center gap-4 italic"
+                >
+                  Werkstatt claimen <ChevronRight className="w-8 h-8" />
+                </motion.button>
+              </div>
+            </motion.div>
+          )}
+
+          {step === 1 && (
+            <motion.div 
+              key="step1"
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -20 }}
+              className="grid grid-cols-1 lg:grid-cols-12 gap-16 items-start"
+            >
+              <div className="lg:col-span-7 bg-white p-12 rounded-[2.5rem] premium-shadow border border-slate-light">
+                <h2 className="text-4xl font-black text-carbon-black tracking-tighter mb-10 italic uppercase">Onboarding</h2>
+                <form className="space-y-6">
+                  <div className="space-y-3">
+                    <label className="text-[10px] font-black text-slate-medium uppercase tracking-[0.2em] ml-1">Werkstatt Name</label>
+                    <div className="relative group">
+                      <Store className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-medium w-6 h-6 group-focus-within:text-safety-orange transition-colors" />
+                      <input 
+                        type="text" 
+                        placeholder="z.B. RadHaus Berlin" 
+                        className="w-full pl-14 pr-4 py-6 bg-slate-light rounded-premium border-2 border-transparent focus:border-safety-orange focus:bg-white outline-none transition-all font-bold text-lg"
+                        value={formData.shopName}
+                        onChange={(e) => setFormData({...formData, shopName: e.target.value})}
+                      />
+                    </div>
+                  </div>
+                  <div className="space-y-3">
+                    <label className="text-[10px] font-black text-slate-medium uppercase tracking-[0.2em] ml-1">Standort</label>
+                    <div className="relative group">
+                      <MapPin className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-medium w-6 h-6 group-focus-within:text-safety-orange transition-colors" />
+                      <input 
+                        type="text" 
+                        placeholder="Straße, PLZ, Stadt" 
+                        className="w-full pl-14 pr-4 py-6 bg-slate-light rounded-premium border-2 border-transparent focus:border-safety-orange focus:bg-white outline-none transition-all font-bold text-lg"
+                        value={formData.address}
+                        onChange={(e) => setFormData({...formData, address: e.target.value})}
+                      />
+                    </div>
+                  </div>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div className="space-y-3">
+                      <label className="text-[10px] font-black text-slate-medium uppercase tracking-[0.2em] ml-1">Telefon</label>
+                      <div className="relative group">
+                        <Phone className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-medium w-6 h-6 group-focus-within:text-safety-orange transition-colors" />
+                        <input 
+                          type="tel" 
+                          placeholder="+49 ..." 
+                          className="w-full pl-14 pr-4 py-6 bg-slate-light rounded-premium border-2 border-transparent focus:border-safety-orange focus:bg-white outline-none transition-all font-bold text-lg"
+                          value={formData.phone}
+                          onChange={(e) => setFormData({...formData, phone: e.target.value})}
+                        />
+                      </div>
+                    </div>
+                    <div className="space-y-3">
+                      <label className="text-[10px] font-black text-slate-medium uppercase tracking-[0.2em] ml-1">E-Mail</label>
+                      <div className="relative group">
+                        <Mail className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-medium w-6 h-6 group-focus-within:text-safety-orange transition-colors" />
+                        <input 
+                          type="email" 
+                          placeholder="shop@beispiel.de" 
+                          className="w-full pl-14 pr-4 py-6 bg-slate-light rounded-premium border-2 border-transparent focus:border-safety-orange focus:bg-white outline-none transition-all font-bold text-lg"
+                          value={formData.email}
+                          onChange={(e) => setFormData({...formData, email: e.target.value})}
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <button 
+                    type="button"
+                    onClick={nextStep}
+                    disabled={!formData.shopName || !formData.email}
+                    className="w-full bg-carbon-black text-white py-6 rounded-premium font-black uppercase tracking-[0.2em] text-lg hover:bg-slate-dark transition-all shadow-xl mt-6 disabled:opacity-50"
+                  >
+                    Profil verifizieren
+                  </button>
+                </form>
+              </div>
+
+              <div className="lg:col-span-5 space-y-8">
+                <div className="bg-carbon-black p-10 rounded-[2.5rem] text-white premium-shadow border-4 border-safety-orange/20 relative overflow-hidden">
+                  <div className="absolute top-0 right-0 w-32 h-32 bg-safety-orange/10 -translate-y-1/2 translate-x-1/2 rounded-full blur-2xl" />
+                  
+                  <div className="flex items-center gap-4 mb-8">
+                    <div className="p-4 bg-safety-orange/10 text-safety-orange rounded-2xl">
+                      <Calculator className="w-8 h-8" />
+                    </div>
+                    <h3 className="text-2xl font-black tracking-tighter italic uppercase">Einnahmen Schätzung</h3>
+                  </div>
+                  <p className="text-slate-medium font-medium mb-8 leading-relaxed">
+                    Basierend auf der lokalen Nachfrage in deiner Zone verpasst du aktuell signifikanten Umsatz.
+                  </p>
+                  <div className="bg-white/5 border border-white/10 p-8 rounded-premium text-center">
+                    <p className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-medium mb-2">Monatliches Potential</p>
+                    <p className="text-5xl font-black tracking-tighter text-safety-orange italic">+ {simulatedRevenue},00 €</p>
+                    <div className="flex items-center justify-center gap-2 mt-4 text-[10px] font-black uppercase tracking-widest text-white/40">
+                      <Zap className="w-3 h-3 fill-safety-orange text-safety-orange" /> Real-time Demand Data
+                    </div>
+                  </div>
+                </div>
+
+                <div className="bg-white p-8 rounded-[2rem] border border-slate-light">
+                  <h4 className="text-[10px] font-black text-slate-medium uppercase tracking-[0.3em] mb-6 flex items-center gap-2">
+                    <div className="w-1.5 h-1.5 rounded-full bg-green-500" /> Profil Vorschau
+                  </h4>
+                  <div className="border-2 border-slate-light rounded-premium p-6 flex gap-6 items-center italic">
+                    <div className="w-16 h-16 bg-carbon-black text-safety-orange rounded-2xl flex items-center justify-center font-black text-2xl">
+                      {formData.shopName ? formData.shopName[0].toUpperCase() : 'W'}
+                    </div>
+                    <div>
+                      <p className="text-xl font-black text-carbon-black tracking-tighter uppercase">{formData.shopName || "Deine Werkstatt"}</p>
+                      <p className="text-[10px] font-bold text-slate-medium uppercase tracking-widest mt-1">{formData.address || "Adresse angeben"}</p>
+                      <div className="flex gap-1 mt-2">
+                        {[1,2,3,4,5].map(s => <div key={s} className="w-4 h-4 bg-safety-orange rounded-full" />)}
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
             </motion.div>
-          </div>
-        )}
+          )}
 
-        {step === 2 && (
-          <motion.div 
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            className="bg-white p-12 rounded-[40px] border border-slate-200 shadow-2xl text-center max-w-2xl mx-auto"
-          >
-            <div className="w-20 h-20 bg-blue-100 text-blue-600 rounded-3xl flex items-center justify-center mx-auto mb-8">
-              <Zap className="w-10 h-10 fill-blue-600" />
-            </div>
-            <h2 className="text-3xl font-black text-slate-900 mb-4 tracking-tight">Fast geschafft!</h2>
-            <p className="text-lg text-slate-600 mb-10 leading-relaxed">
-              VeloDash nutzt **Stripe Connect**, um sicherzustellen, dass Sie Ihre Zahlungen pünktlich und sicher erhalten. 
-              Wir behalten lediglich 25% Provision ein – der Rest gehört Ihnen.
-            </p>
-
-            <div className="bg-slate-50 p-6 rounded-2xl mb-10 text-left space-y-3">
-              <div className="flex justify-between items-center text-sm">
-                <span className="text-slate-500 font-medium">Auszahlungs-Rhythmus:</span>
-                <span className="text-slate-900 font-bold">Wöchentlich</span>
-              </div>
-              <div className="flex justify-between items-center text-sm">
-                <span className="text-slate-500 font-medium">Gebühr pro Buchung:</span>
-                <span className="text-slate-900 font-bold">VeloDash (25%) + Stripe Fee</span>
-              </div>
-            </div>
-
-            <button 
-              onClick={() => alert("Redirecting to Stripe Connect...")}
-              className="w-full bg-blue-600 text-white py-5 rounded-2xl font-black text-xl hover:bg-blue-700 transition-all shadow-xl shadow-blue-500/20 flex items-center justify-center gap-3 group"
+          {step === 2 && (
+            <motion.div 
+              key="step2"
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.95 }}
+              className="bg-white p-16 rounded-[3rem] premium-shadow border border-slate-light text-center max-w-3xl mx-auto relative overflow-hidden"
             >
-              Konto verknüpfen & Starten <ChevronRight className="w-6 h-6 group-hover:translate-x-1 transition-transform" />
-            </button>
-            <p className="text-xs text-slate-400 mt-6 uppercase font-bold tracking-widest">Sichere Verbindung via Stripe</p>
-          </motion.div>
-        )}
+              <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-2 bg-safety-orange" />
+              
+              <div className="w-24 h-24 bg-carbon-black text-safety-orange rounded-[2rem] flex items-center justify-center mx-auto mb-10 shadow-2xl rotate-3">
+                <Zap className="w-12 h-12 fill-current" />
+              </div>
+              
+              <h2 className="text-5xl font-black text-carbon-black tracking-tighter mb-6 italic uppercase">Ready for Takeoff?</h2>
+              <p className="text-xl text-slate-medium font-medium mb-12 leading-relaxed max-w-xl mx-auto">
+                VeloDash nutzt <span className="text-carbon-black font-black italic">Stripe Connect</span> für blitzschnelle, sichere Auszahlungen. 25% Kommission — keine versteckten Kosten.
+              </p>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
+                <div className="bg-slate-light p-8 rounded-premium text-left">
+                  <p className="text-[10px] font-black uppercase tracking-widest text-slate-medium mb-2 italic">Auszahlungs-Zyklus</p>
+                  <p className="text-2xl font-black tracking-tighter text-carbon-black uppercase italic">Wöchentlich</p>
+                </div>
+                <div className="bg-slate-light p-8 rounded-premium text-left">
+                  <p className="text-[10px] font-black uppercase tracking-widest text-slate-medium mb-2 italic">Partner Gebühr</p>
+                  <p className="text-2xl font-black tracking-tighter text-carbon-black uppercase italic">25% Revenue</p>
+                </div>
+              </div>
+
+              <motion.button 
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                onClick={() => alert("Redirecting to Stripe Connect...")}
+                className="w-full bg-safety-orange text-white py-8 rounded-premium font-black uppercase tracking-[0.2em] text-xl hover:bg-safety-orange-muted transition-all shadow-2xl shadow-safety-orange/30 flex items-center justify-center gap-4 italic"
+              >
+                Stripe verknüpfen <ChevronRight className="w-8 h-8" />
+              </motion.button>
+              
+              <div className="mt-10 flex items-center justify-center gap-3 grayscale opacity-40">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/b/ba/Stripe_Logo%2C_revised_2016.svg" alt="Stripe" className="h-8" />
+                <span className="text-[10px] font-black uppercase tracking-widest text-carbon-black border-l border-carbon-black pl-3 italic">Secure Partner</span>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
+
+      {step > 0 && (
+        <div className="max-w-6xl mx-auto px-6 pb-20">
+          <button 
+            onClick={prevStep}
+            className="flex items-center gap-2 text-slate-medium hover:text-carbon-black transition-colors font-black uppercase tracking-widest text-xs italic"
+          >
+            <ArrowLeft className="w-4 h-4" /> Zurück
+          </button>
+        </div>
+      )}
     </main>
   );
 }

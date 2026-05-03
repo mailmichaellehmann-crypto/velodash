@@ -7,7 +7,7 @@ export async function POST(request: Request) {
     const { shop_id, email, return_url } = await request.json();
 
     if (!shop_id || !email) {
-      return NextResponse.json({ error: 'Missing shop_id or email' }, { status: 400 });
+      return NextResponse.json({ error: 'shop_id oder E-Mail fehlt' }, { status: 400 });
     }
 
     const account = await createConnectAccount(email);
@@ -26,6 +26,6 @@ export async function POST(request: Request) {
 
     return NextResponse.json({ url: accountLink.url });
   } catch (error: any) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    return NextResponse.json({ error: 'Fehler beim Onboarding' }, { status: 500 });
   }
 }
