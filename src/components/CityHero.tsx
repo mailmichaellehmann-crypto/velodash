@@ -3,10 +3,11 @@
 import { motion } from "framer-motion";
 import { ChevronRight, ArrowRight } from "lucide-react";
 import Link from "next/link";
+import { ReactNode } from "react";
 
 interface CityHeroProps {
   city: string;
-  headline: string;
+  headline: ReactNode;
   subtext: string;
 }
 
