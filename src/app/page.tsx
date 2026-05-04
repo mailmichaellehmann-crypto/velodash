@@ -1,161 +1,137 @@
-import Image from "next/image";
-import { Zap, Bike, Store, ArrowRight, ShieldCheck, Clock } from "lucide-react";
-import WaitlistForm from "@/components/WaitlistForm";
+import Link from "next/link";
+import { ArrowRight, Zap, MapPin, Bike, Sparkles, TrendingUp, ShieldCheck } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 
 export default function Home() {
-  const cities = [
-    { name: "Berlin", slug: "berlin", tag: "Hauptstadt" },
-    { name: "Hamburg", slug: "hamburg", tag: "Hansestadt" },
-    { name: "München", slug: "muenchen", tag: "Premium" },
-    { name: "Köln", slug: "koeln", tag: "Klassik" },
-    { name: "Frankfurt", slug: "frankfurt", tag: "Express" },
-  ];
-
   return (
-    <main className="min-h-screen bg-slate-light text-carbon-black font-sans">
+    <main className="min-h-screen bg-white">
       <Navbar />
 
-      {/* Hero Section */}
-      <section className="relative min-h-[90vh] flex items-center overflow-hidden bg-carbon-black text-white">
-        <div className="absolute top-0 right-0 w-1/2 h-full bg-safety-orange/10 -skew-x-12 translate-x-1/4 z-0" />
+      {/* Modern Hero Section */}
+      <section className="relative pt-20 pb-32 lg:pt-32 lg:pb-48 overflow-hidden">
+        {/* Background Decorative Elements */}
+        <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-blue-electric/5 rounded-full blur-[100px] -translate-y-1/2 translate-x-1/2" />
+        <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-green-lime/5 rounded-full blur-[100px] translate-y-1/2 -translate-x-1/2" />
         
-        <div className="container mx-auto px-6 relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-16 items-center">
-          <div className="lg:col-span-8">
-            <div className="inline-flex items-center gap-2 bg-safety-orange/20 text-safety-orange px-4 py-2 rounded-full text-xs font-black tracking-[0.3em] uppercase mb-8">
-              <Zap className="w-4 h-4 fill-current" /> Next-Gen Bike Repair
-            </div>
-            <h1 className="text-7xl md:text-[10rem] font-black tracking-tighter leading-[0.8] mb-12 italic uppercase">
-              VELO<br /><span className="text-safety-orange">DASH</span>
-            </h1>
-            <p className="text-2xl md:text-4xl font-black text-white tracking-tight mb-12 uppercase italic leading-none max-w-2xl">
-              Der Marktplatz für <span className="text-safety-orange underline underline-offset-8">Premium</span> Express-Reparatur Slots.
-            </p>
-            
-            <div className="flex flex-col sm:flex-row gap-6">
-              <a 
-                href="#cities"
-                className="bg-safety-orange hover:bg-safety-orange-muted text-white px-12 py-6 rounded-premium text-xl font-black uppercase tracking-tighter transition-all shadow-2xl shadow-safety-orange/40 flex items-center justify-center gap-3 italic"
-              >
-                Slot finden <ArrowRight className="w-6 h-6" />
-              </a>
-              <a 
-                href="/shops/claim"
-                className="bg-transparent border-2 border-white/20 hover:border-white text-white px-12 py-6 rounded-premium text-xl font-black uppercase tracking-tighter transition-all flex items-center justify-center gap-3 italic"
-              >
-                Für Werkstätten <Store className="w-6 h-6" />
-              </a>
-            </div>
+        <div className="container mx-auto px-6 relative z-10 text-center">
+          <div className="inline-flex items-center gap-2 px-4 py-2 bg-blue-electric/10 text-blue-electric rounded-full text-xs font-black uppercase tracking-widest mb-10">
+            <Sparkles className="w-4 h-4" /> Jetzt in 50+ Städten
           </div>
           
-          <div className="lg:col-span-4 hidden lg:block relative">
-            <div className="aspect-[3/4] rounded-[3rem] overflow-hidden premium-shadow border-4 border-white/10 rotate-3">
-              <img 
-                src="https://images.unsplash.com/photo-1571333250630-f0230c320b6d?auto=format&fit=crop&q=80&w=800" 
-                alt="Express Repair" 
-                className="w-full h-full object-cover"
-              />
-            </div>
-            <div className="absolute -bottom-10 -left-10 bg-white p-8 rounded-3xl premium-shadow text-carbon-black">
-              <div className="text-4xl font-black tracking-tighter text-safety-orange italic">25min</div>
-              <div className="text-[10px] font-black uppercase tracking-widest text-slate-medium">Durchschn. Reparaturzeit</div>
-            </div>
-          </div>
-        </div>
-      </section>
+          <h1 className="text-6xl md:text-9xl font-black text-slate-900 leading-[0.9] tracking-tighter mb-10">
+            Fix your bike <br /> 
+            <span className="text-blue-electric italic">in no time.</span>
+          </h1>
+          
+          <p className="text-xl md:text-2xl text-slate-400 font-medium max-w-2xl mx-auto mb-16 leading-relaxed">
+            Die erste vollautomatisierte Buchungsplattform für Premium-Fahrradreparaturen. Schnell, sicher, effizient.
+          </p>
 
-      {/* Trust Bar */}
-      <section className="py-12 bg-white border-y border-slate-light">
-        <div className="container mx-auto px-6 flex flex-wrap justify-between items-center gap-8 opacity-40">
-          <div className="text-xl font-black italic tracking-tighter">BIKE<span className="text-safety-orange">MAG</span></div>
-          <div className="text-xl font-black italic tracking-tighter text-slate-medium uppercase tracking-[0.2em]">City<span className="text-carbon-black">Cycle</span></div>
-          <div className="text-xl font-black italic tracking-tighter">PREMIUM<span className="text-safety-orange">GEAR</span></div>
-          <div className="text-xl font-black italic tracking-tighter text-slate-medium">VELO<span className="text-carbon-black">REVIEW</span></div>
-        </div>
-      </section>
-
-      {/* Cities Section */}
-      <section id="cities" className="py-32 container mx-auto px-6">
-        <div className="text-center mb-20">
-          <span className="text-safety-orange font-black uppercase tracking-[0.4em] text-xs mb-4 block">Deployment Zones</span>
-          <h2 className="text-5xl md:text-7xl font-black text-carbon-black tracking-tighter italic uppercase">WÄHLE DEINE STADT</h2>
-          <div className="w-24 h-2 bg-safety-orange mx-auto mt-4" />
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {cities.map((city) => (
-            <a 
-              key={city.slug}
-              href={`/reparatur/${city.slug}`}
-              className="group bg-white p-10 rounded-[2.5rem] premium-shadow border border-slate-light hover:border-safety-orange transition-all duration-500 overflow-hidden relative"
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-6">
+            <Link 
+              href="#cities" 
+              className="w-full sm:w-auto bg-blue-electric hover:bg-blue-electric-hover text-white px-12 py-6 rounded-[2rem] text-xl font-bold flex items-center justify-center gap-3 transition-all shadow-2xl shadow-blue-electric/20 hover-lift"
             >
-              <div className="absolute -top-4 -right-4 w-32 h-32 bg-safety-orange/5 rounded-full blur-2xl group-hover:bg-safety-orange/10 transition-colors" />
-              <span className="text-[10px] font-black uppercase tracking-[0.3em] text-safety-orange mb-4 block">{city.tag}</span>
-              <h3 className="text-4xl font-black text-carbon-black tracking-tighter uppercase italic group-hover:translate-x-2 transition-transform">
-                {city.name}
-              </h3>
-              <div className="mt-8 flex items-center gap-2 text-xs font-black uppercase tracking-widest text-slate-medium group-hover:text-carbon-black">
-                Jetzt Verfügbarkeit prüfen <ArrowRight className="w-4 h-4 group-hover:translate-x-2 transition-transform" />
-              </div>
-            </a>
-          ))}
-          
-          <div className="bg-slate-dark p-10 rounded-[2.5rem] text-white flex flex-col justify-center items-center text-center border-4 border-dashed border-white/5 group hover:border-safety-orange/30 transition-all">
-            <h3 className="text-2xl font-black tracking-tighter uppercase italic mb-4">Deine Stadt fehlt?</h3>
-            <p className="text-slate-medium text-sm font-medium mb-6">Wir expandieren schnell. Stimme jetzt für dein Viertel ab.</p>
-            <a href="#waitlist" className="text-safety-orange font-black uppercase tracking-widest text-xs flex items-center gap-2 hover:translate-x-1 transition-transform">
-              Voten <ArrowRight className="w-4 h-4" />
-            </a>
+              Finde deinen Slot <ArrowRight className="w-6 h-6" />
+            </Link>
+            <Link 
+              href="/shops/claim" 
+              className="w-full sm:w-auto bg-slate-50 hover:bg-slate-100 text-slate-900 px-12 py-6 rounded-[2rem] text-xl font-bold flex items-center justify-center gap-3 transition-all"
+            >
+              Für Werkstätten
+            </Link>
           </div>
         </div>
       </section>
 
-      {/* Benefits Section */}
-      <section className="py-32 bg-carbon-black text-white relative overflow-hidden">
-        <div className="container mx-auto px-6 grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
-          <div>
-            <span className="text-safety-orange font-black uppercase tracking-[0.3em] text-sm mb-4 block">Value Proposition</span>
-            <h2 className="text-6xl md:text-8xl font-black tracking-tighter leading-[0.9] mb-12 italic uppercase">
-              KEINE ZEIT <br /><span className="text-safety-orange">FÜR WARTELISTEN.</span>
-            </h2>
+      {/* Social Proof / Stats */}
+      <section className="py-12 border-y border-slate-50 bg-slate-50/30">
+        <div className="container mx-auto px-6">
+          <div className="flex flex-wrap justify-center gap-12 md:gap-24 opacity-40 grayscale">
+            <div className="flex items-center gap-2 font-black text-xl tracking-tighter">SHIMANO</div>
+            <div className="flex items-center gap-2 font-black text-xl tracking-tighter">CANYON</div>
+            <div className="flex items-center gap-2 font-black text-xl tracking-tighter">SPECIALIZED</div>
+            <div className="flex items-center gap-2 font-black text-xl tracking-tighter">TREK</div>
+          </div>
+        </div>
+      </section>
+
+      {/* Feature Grid */}
+      <section className="py-32 bg-white">
+        <div className="container mx-auto px-6">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
+            <div className="space-y-6 group">
+              <div className="w-16 h-16 bg-blue-electric text-white rounded-[1.5rem] flex items-center justify-center group-hover:rotate-6 transition-transform shadow-lg shadow-blue-electric/20">
+                <Zap className="w-8 h-8 fill-current" />
+              </div>
+              <h3 className="text-3xl font-black text-slate-900 tracking-tight">Express Slots</h3>
+              <p className="text-lg text-slate-500 font-medium leading-relaxed">Keine Wartezeiten mehr. Buche Notfall-Termine, wenn du sie wirklich brauchst.</p>
+            </div>
             
-            <div className="space-y-10">
-              <BenefitItem 
-                icon={Clock} 
-                title="EXPRESS BOOKING" 
-                text="In unter 60 Sekunden zum bestätigten Reparatur-Termin. Kein Telefonat nötig."
-              />
-              <BenefitItem 
-                icon={ShieldCheck} 
-                title="CERTIFIED SHOPS" 
-                text="Nur die besten Werkstätten deiner Stadt erhalten Zugang zum VeloDash Netzwerk."
-              />
-              <BenefitItem 
-                icon={Zap} 
-                title="AI ESTIMATION" 
-                text="Unsere AI berechnet die Reparaturdauer und den Preis in Echtzeit."
-              />
+            <div className="space-y-6 group">
+              <div className="w-16 h-16 bg-green-lime text-white rounded-[1.5rem] flex items-center justify-center group-hover:rotate-6 transition-transform shadow-lg shadow-green-lime/20">
+                <ShieldCheck className="w-8 h-8" />
+              </div>
+              <h3 className="text-3xl font-black text-slate-900 tracking-tight">Top Mechaniker</h3>
+              <p className="text-lg text-slate-500 font-medium leading-relaxed">Nur zertifizierte Partnerwerkstätten mit den höchsten Qualitätsstandards.</p>
+            </div>
+            
+            <div className="space-y-6 group">
+              <div className="w-16 h-16 bg-indigo-vibrant text-white rounded-[1.5rem] flex items-center justify-center group-hover:rotate-6 transition-transform shadow-lg shadow-indigo-vibrant/20">
+                <TrendingUp className="w-8 h-8" />
+              </div>
+              <h3 className="text-3xl font-black text-slate-900 tracking-tight">Fair Pricing</h3>
+              <p className="text-lg text-slate-500 font-medium leading-relaxed">Transparente Kostenvoranschläge durch unsere AI-Zeitkalkulation.</p>
             </div>
           </div>
-          
-          <div className="relative">
-             <div className="aspect-square bg-safety-orange/5 rounded-[4rem] border-2 border-white/5 flex items-center justify-center p-10 overflow-hidden relative">
-                <div className="absolute inset-0 bg-gradient-to-br from-safety-orange/20 to-transparent z-0" />
-                <img 
-                  src="https://images.unsplash.com/photo-1530138960748-100464ac9427?auto=format&fit=crop&q=80&w=800" 
-                  alt="Mechanic" 
-                  className="w-full h-full object-cover rounded-[3rem] relative z-10 premium-shadow grayscale hover:grayscale-0 transition-all duration-700"
-                />
-             </div>
-          </div>
         </div>
       </section>
 
-      {/* Waitlist Section */}
-      <section id="waitlist" className="py-32 bg-slate-light">
-        <div className="container mx-auto px-6 max-w-4xl">
-          <WaitlistForm />
+      {/* City Selector Section */}
+      <section id="cities" className="py-32 bg-slate-50/50">
+        <div className="container mx-auto px-6">
+          <div className="mb-20">
+            <h2 className="text-5xl md:text-7xl font-black text-slate-900 tracking-tighter mb-6">Wir sind bereit.</h2>
+            <p className="text-2xl text-slate-400 font-medium uppercase tracking-widest">Wähle deine Stadt</p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {[
+              { name: 'Berlin', path: '/reparatur/berlin', slots: '12 Slots frei', color: 'bg-blue-electric' },
+              { name: 'Hamburg', path: '/reparatur/hamburg', slots: '8 Slots frei', color: 'bg-green-lime' },
+              { name: 'München', path: '/reparatur/muenchen', slots: '15 Slots frei', color: 'bg-accent-coral' },
+              { name: 'Köln', path: '/reparatur/koeln', slots: '5 Slots frei', color: 'bg-indigo-vibrant' },
+              { name: 'Frankfurt', path: '/reparatur/frankfurt', slots: '22 Slots frei', color: 'bg-slate-900' },
+            ].map((city) => (
+              <Link key={city.name} href={city.path} className="group relative bg-white p-12 rounded-[2.5rem] border border-slate-100 soft-shadow hover-lift overflow-hidden">
+                <div className="relative z-10">
+                  <h3 className="text-4xl font-black text-slate-900 mb-2">{city.name}</h3>
+                  <div className="flex items-center gap-2">
+                    <span className="w-2 h-2 rounded-full bg-green-lime animate-pulse" />
+                    <span className="text-slate-400 font-bold uppercase tracking-widest text-xs">{city.slots}</span>
+                  </div>
+                </div>
+                <div className={cn(
+                  "absolute bottom-0 right-0 w-24 h-24 flex items-center justify-center transition-all group-hover:scale-110 group-hover:rotate-12",
+                  city.color,
+                  "rounded-tl-[3rem] text-white"
+                )}>
+                  <ArrowRight className="w-8 h-8" />
+                </div>
+              </Link>
+            ))}
+            
+            <div className="group relative bg-slate-900 p-12 rounded-[2.5rem] border border-slate-800 soft-shadow hover-lift overflow-hidden">
+                <div className="relative z-10">
+                  <h3 className="text-4xl font-black text-white mb-2">Deine Stadt?</h3>
+                  <p className="text-slate-400 font-bold uppercase tracking-widest text-xs">Stimme jetzt ab</p>
+                </div>
+                <div className="absolute bottom-0 right-0 w-24 h-24 flex items-center justify-center bg-white text-slate-900 rounded-tl-[3rem]">
+                  <MapPin className="w-8 h-8" />
+                </div>
+            </div>
+          </div>
         </div>
       </section>
 
@@ -164,16 +140,6 @@ export default function Home() {
   );
 }
 
-function BenefitItem({ icon: Icon, title, text }: { icon: any, title: string, text: string }) {
-  return (
-    <div className="flex gap-8 group">
-      <div className="flex-shrink-0 w-16 h-16 bg-white/5 border border-white/10 text-safety-orange rounded-2xl flex items-center justify-center transition-all group-hover:bg-safety-orange group-hover:text-white group-hover:rotate-6">
-        <Icon className="w-8 h-8 fill-current" />
-      </div>
-      <div>
-        <h3 className="text-2xl font-black tracking-tighter mb-2 italic uppercase">{title}</h3>
-        <p className="text-slate-medium font-medium leading-relaxed max-w-md">{text}</p>
-      </div>
-    </div>
-  );
+function cn(...inputs: any[]) {
+  return inputs.filter(Boolean).join(" ");
 }

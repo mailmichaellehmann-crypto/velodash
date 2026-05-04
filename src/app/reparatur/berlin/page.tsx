@@ -1,132 +1,89 @@
-import { Metadata } from "next";
+import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
 import CityHero from "@/components/CityHero";
 import BookingFlow from "@/components/BookingFlow";
 import WaitlistForm from "@/components/WaitlistForm";
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
-import { CheckCircle2, ShieldCheck, Zap, ArrowRight } from "lucide-react";
 
-export const metadata: Metadata = {
-  title: "Fahrrad Reparatur Express Berlin | VeloDash",
-  description: "Buchen Sie Ihren Berliner Fahrrad-Reparaturtermin in Rekordzeit. Express-Service für Rennräder, MTBs und E-Bikes in der Hauptstadt.",
+export const metadata = {
+  title: 'Fahrrad Reparatur Berlin | Express Service | VeloDash',
+  description: 'Buche deinen Fahrrad Reparatur Termin in Berlin in Sekunden. Express Slots für E-Bikes, Rennräder und City Bikes.',
 };
-
-const BENEFITS = [
-  {
-    title: "Hauptstadt-Tempo",
-    description: "Von Mitte bis Neukölln – wir finden den schnellsten Slot in Ihrem Kiez.",
-    icon: Zap,
-  },
-  {
-    title: "Berliner Meister",
-    description: "Handverlesene Experten, die Ihr Bike mit höchster Präzision reparieren.",
-    icon: ShieldCheck,
-  },
-  {
-    title: "AI-Estimation",
-    description: "Keine Berliner Schnauze bei den Preisen. Transparente Schätzung vorab.",
-    icon: CheckCircle2,
-  },
-];
-
-const FAQS = [
-  {
-    question: "Gibt es Express-Termine am selben Tag?",
-    answer: "Ja, unsere 'Emergency Slots' in Berlin sind oft noch am Tag der Buchung verfügbar.",
-  },
-  {
-    question: "Welche Fahrräder werden repariert?",
-    answer: "Wir reparieren alles vom klassischen Stadtrad über High-End Rennräder bis hin zu modernen Lasten-E-Bikes.",
-  },
-  {
-    question: "Ist der Service teurer als direkt in der Werkstatt?",
-    answer: "Nein, Sie zahlen den fairen Marktpreis. Wir erheben lediglich eine Servicegebühr für die Vermittlung der Express-Slots.",
-  },
-];
 
 export default function BerlinPage() {
   return (
-    <main className="min-h-screen bg-slate-light">
+    <main className="min-h-screen bg-white">
       <Navbar />
       
       <CityHero 
         city="Berlin"
-        headline="Fahrrad Reparatur Express Berlin"
-        subtext="Dein Kiez, Dein Bike, Dein Express-Termin. Ohne Wartezeit zurück auf die Berliner Straßen."
+        headline={<>Fahrrad Reparatur <span className="text-blue-electric">Berlin Express.</span></>}
+        subtext="Keine Lust auf 3 Wochen Wartezeit? Wir vermitteln dir sofort verfügbare Premium-Slots in ganz Berlin. Von Kreuzberg bis Spandau."
       />
 
-      <section className="py-32 container mx-auto px-6">
-        <div className="flex flex-col lg:flex-row justify-between items-end mb-20 gap-8">
-          <div className="max-w-2xl">
-            <span className="text-safety-orange font-black uppercase tracking-[0.3em] text-sm mb-4 block">VeloDash Impact</span>
-            <h2 className="text-5xl md:text-6xl font-black text-carbon-black tracking-tighter leading-none">
-              Warum Berlin auf uns <span className="text-safety-orange">abfährt.</span>
-            </h2>
-          </div>
-          <p className="text-slate-medium font-medium text-lg max-w-sm">
-            Die smarte Lösung für eine fahrradfreundliche Hauptstadt. Schnell, digital und gnadenlos effizient.
-          </p>
-        </div>
-        
-        <div className="grid md:grid-cols-3 gap-8">
-          {BENEFITS.map((benefit, i) => (
-            <div key={benefit.title} className="bg-white p-10 rounded-[2rem] premium-shadow border border-slate-light group hover:border-safety-orange transition-all duration-500">
-              <div className="w-16 h-16 bg-carbon-black text-safety-orange rounded-2xl flex items-center justify-center mb-8 transition-transform group-hover:rotate-6">
-                <benefit.icon className="w-8 h-8 fill-current" />
+      <section className="py-12 bg-white relative">
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-px h-24 bg-slate-100" />
+        <BookingFlow />
+      </section>
+
+      <section className="py-32 bg-white">
+        <div className="container mx-auto px-6">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-24 items-center">
+            <div>
+              <h2 className="text-5xl font-black text-slate-900 tracking-tight mb-8">Warum VeloDash in Berlin?</h2>
+              <div className="space-y-8">
+                {[
+                  { title: "24h Express", desc: "Über 80% unserer Buchungen werden innerhalb von 24 Stunden abgeschlossen.", color: "bg-blue-electric" },
+                  { title: "Kiezkultur", desc: "Wir arbeiten mit den besten lokalen Meisterbetrieben in jedem Berliner Bezirk.", color: "bg-green-lime" },
+                  { title: "Mobile Ready", desc: "Buchbar in 3 Taps direkt vom Smartphone, während du noch am Radweg stehst.", color: "bg-indigo-vibrant" }
+                ].map((item, idx) => (
+                  <div key={idx} className="flex gap-6">
+                    <div className={cn("w-12 h-12 shrink-0 rounded-2xl flex items-center justify-center text-white font-bold", item.color)}>
+                      {idx + 1}
+                    </div>
+                    <div>
+                      <h4 className="text-xl font-bold text-slate-900 mb-2">{item.title}</h4>
+                      <p className="text-slate-500 font-medium leading-relaxed">{item.desc}</p>
+                    </div>
+                  </div>
+                ))}
               </div>
-              <h3 className="text-2xl font-black text-carbon-black tracking-tighter mb-4 uppercase italic">
-                {String(i + 1).padStart(2, '0')}. {benefit.title}
-              </h3>
-              <p className="text-slate-medium font-medium leading-relaxed">{benefit.description}</p>
             </div>
-          ))}
-        </div>
-      </section>
-
-      <section id="booking" className="py-32 bg-carbon-black text-white relative overflow-hidden">
-        {/* Abstract background shape */}
-        <div className="absolute top-0 right-0 w-1/2 h-full bg-safety-orange/5 -skew-x-12 translate-x-1/4 pointer-events-none" />
-        
-        <div className="container mx-auto px-6 relative z-10">
-          <div className="text-center mb-20">
-            <span className="text-safety-orange font-black uppercase tracking-[0.4em] text-xs mb-4 block">Booking Engine</span>
-            <h2 className="text-5xl md:text-7xl font-black tracking-tighter mb-4 italic uppercase">EXPRESS CHECK-IN</h2>
-            <div className="w-24 h-2 bg-safety-orange mx-auto" />
+            <div className="relative">
+               <div className="aspect-square bg-slate-50 rounded-[3rem] overflow-hidden border border-slate-100 p-12">
+                  <div className="w-full h-full bg-white rounded-3xl shadow-2xl p-8 flex flex-col justify-between">
+                    <div className="flex justify-between items-center">
+                      <div className="bg-blue-electric/10 text-blue-electric px-4 py-1 rounded-full text-[10px] font-black uppercase tracking-widest">Berlin Mitte</div>
+                      <div className="text-slate-300 font-black">09:41</div>
+                    </div>
+                    <div className="space-y-4">
+                      <div className="h-4 w-3/4 bg-slate-50 rounded-full" />
+                      <div className="h-4 w-1/2 bg-slate-50 rounded-full" />
+                    </div>
+                    <div className="h-48 bg-slate-50 rounded-2xl border-2 border-dashed border-slate-100 flex items-center justify-center text-slate-300 font-bold italic">
+                      Slot Map Preview
+                    </div>
+                  </div>
+               </div>
+               {/* Floating elements */}
+               <div className="absolute -bottom-6 -right-6 bg-green-lime text-white p-6 rounded-3xl shadow-xl shadow-green-lime/20 font-black italic">
+                 +12 Slots Today
+               </div>
+            </div>
           </div>
-          <BookingFlow />
         </div>
       </section>
 
-      <section className="py-32 container mx-auto px-6 grid grid-cols-1 lg:grid-cols-12 gap-20 items-start">
-        <div className="lg:col-span-5">
-          <span className="text-safety-orange font-black uppercase tracking-[0.3em] text-sm mb-4 block">Help Center</span>
-          <h2 className="text-5xl font-black text-carbon-black tracking-tighter mb-8 italic leading-none uppercase">NOCH FRAGEN? <br/>WIR HABEN <br/>ANTWORTEN.</h2>
-          <div className="bg-safety-orange h-px w-full mb-12 opacity-30" />
-          <p className="text-slate-medium font-medium text-xl">
-            Alles was du über den schnellsten Bike-Service Berlins wissen musst.
-          </p>
-        </div>
-        
-        <div className="lg:col-span-7 space-y-6">
-          {FAQS.map((faq) => (
-            <div key={faq.question} className="bg-white p-8 rounded-premium premium-shadow border border-slate-light group hover:border-slate-medium transition-all">
-              <h3 className="text-xl font-black text-carbon-black tracking-tighter mb-4 flex items-center gap-4 group-hover:text-safety-orange transition-colors uppercase">
-                <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-1" />
-                {faq.question}
-              </h3>
-              <p className="text-slate-medium font-medium leading-relaxed pl-9">{faq.answer}</p>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      <section id="waitlist" className="py-32 bg-slate-light">
+      <section className="py-32 bg-slate-50/50">
         <div className="container mx-auto px-6 max-w-4xl">
           <WaitlistForm />
         </div>
       </section>
 
-      <Footer city="Berlin City Edition" />
+      <Footer city="Berlin Edition" />
     </main>
   );
+}
+
+function cn(...inputs: any[]) {
+  return inputs.filter(Boolean).join(" ");
 }
