@@ -13,7 +13,8 @@ import {
   Bell,
   Menu,
   ChevronRight,
-  LogOut
+  LogOut,
+  Sparkles
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
